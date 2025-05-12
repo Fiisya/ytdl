@@ -113,13 +113,11 @@
       <button onclick="downloadVideo()">Download Video</button>
       <button onclick="downloadAudio()">Download MP3</button>
     </div>
-    <div id="loading" style="display: none;">⏳ Memproses video...</div>
-    <div id="result"></div>
-  </div>
+    <div id="loading" style="display:none; text-align:center;">Loading...</div>
 
-  <footer>
-    © 2025 AlfixD. All rights reserved.
-  </footer>
+<footer style="text-align: center; padding: 20px; font-size: 14px; color: #999;">
+  © 2025 AlfixD. All rights reserved.
+</footer>
 
   <script>
     async function pasteLink() {
@@ -147,7 +145,7 @@
       result.innerHTML = "";
 
       try {
-        const apiUrl = `https://api.alfixd.my.id/api/ytdl?url=${encodeURIComponent(url)}&format=mp4`;
+        const apiUrl = `https://api.alfixd.my.id/api/ytdl?url=${encodeURIComponent(url)}&format=720`;
         const res = await fetch(apiUrl);
         const data = await res.json();
         loading.style.display = "none";
