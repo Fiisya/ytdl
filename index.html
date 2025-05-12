@@ -120,74 +120,85 @@
 </footer>
 
   <script>
-  async function downloadVideo() {
-    const url = document.getElementById("urlInput").value;
-    if (!url) return alert("Masukkan URL YouTube!");
-
-    const loading = document.getElementById("loading");
-    const result = document.getElementById("result");
-    loading.style.display = "block";
-    result.innerHTML = "";
-
-    try {
-      const apiUrl = `https://api.alfixd.my.id/api/ytdl?url=${encodeURIComponent(url)}&format=720`;
-      console.log("Request URL:", apiUrl); // Log the request URL
-      const res = await fetch(apiUrl);
-      const data = await res.json();
-      loading.style.display = "none";
-
-      if (data.status && data.result) {
-        result.innerHTML = `
-          <p>✅ Video berhasil didapatkan:</p>
-          <img src="${data.result.thumbnail}" alt="Thumbnail" style="max-width: 100%; border-radius: 10px; margin-bottom: 10px;" />
-          <video controls src="${data.result.download_url}" style="width:100%; margin-bottom:10px;"></video>
-          <a href="${data.result.download_url}" download="${data.result.title}.mp4">
-            <button>Download Video MP4</button>
-          </a>
-        `;
-      } else {
-        result.innerHTML = `<p style="color: #ff4c4c;">Terjadi kesalahan saat mengambil video.</p>`;
+    async function pasteLink() {
+      try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById("urlInput").value = text;
+      } catch {
+        alert("Gagal mengakses clipboard!");
       }
-    } catch (error) {
-      loading.style.display = "none";
-      console.error(error); // Log error
-      result.innerHTML = `<p style="color: #ff4c4c;">Terjadi kesalahan saat mengunduh video.</p>`;
     }
-  }
 
-  async function downloadAudio() {
-    const url = document.getElementById("urlInput").value;
-    if (!url) return alert("Masukkan URL YouTube!");
+    function deleteLink() {
+      document.getElementById("urlInput").value = "";
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("loading").style.display = "none";
+    }
 
-    const loading = document.getElementById("loading");
-    const result = document.getElementById("result");
-    loading.style.display = "block";
-    result.innerHTML = "";
+    async function downloadVideo() {
+      const url = document.getElementById("urlInput").value;
+      if (!url) return alert("Masukkan URL YouTube!");
 
-    try {
-      const apiUrl = `https://api.alfixd.my.id/api/ytdl?url=${encodeURIComponent(url)}&format=mp3`;
-      console.log("Request URL:", apiUrl); // Log the request URL
-      const res = await fetch(apiUrl);
-      const data = await res.json();
-      loading.style.display = "none";
+      const loading = document.getElementById("loading");
+      const result = document.getElementById("result");
+      loading.style.display = "block";
+      result.innerHTML = "";
 
-      if (data.status && data.result) {
-        result.innerHTML = `
-          <p>✅ Audio berhasil didapatkan:</p>
-          <audio controls src="${data.result.download_url}" style="width:100%; margin-bottom:10px;"></audio>
-          <a href="${data.result.download_url}" download="${data.result.title}.mp3">
-            <button>Download MP3</button>
-          </a>
-        `;
-      } else {
-        result.innerHTML = `<p style="color: #ff4c4c;">Terjadi kesalahan saat mengambil audio.</p>`;
+      try {
+        const apiUrl = `https://api.alfixd.my.id/api/ytdl?url=${encodeURIComponent(url)}&format=720`;
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+        loading.style.display = "none";
+
+        if (data.status && data.result) {
+          result.innerHTML = `
+            <p>✅ Video berhasil didapatkan:</p>
+            <img src="${data.result.thumbnail}" alt="Thumbnail" style="max-width: 100%; border-radius: 10px; margin-bottom: 10px;" />
+            <video controls src="${data.result.download_url}" style="width:100%; margin-bottom:10px;"></video>
+            <a href="${data.result.download_url}" download="${data.result.title}.mp4">
+              <button>Download Video MP4</button>
+            </a>
+          `;
+        } else {
+          result.innerHTML = `<p style="color: #ff4c4c;">Terjadi kesalahan saat mengambil video.</p>`;
+        }
+      } catch {
+        loading.style.display = "none";
+        result.innerHTML = `<p style="color: #ff4c4c;">Terjadi kesalahan saat mengunduh video.</p>`;
       }
-    } catch (error) {
-      loading.style.display = "none";
-      console.error(error); // Log error
-      result.innerHTML = `<p style="color: #ff4c4c;">Terjadi kesalahan saat mengunduh audio.</p>`;
     }
-  }
-</script>
+
+    async function downloadAudio() {
+      const url = document.getElementById("urlInput").value;
+      if (!url) return alert("Masukkan URL YouTube!");
+
+      const loading = document.getElementById("loading");
+      const result = document.getElementById("result");
+      loading.style.display = "block";
+      result.innerHTML = "";
+
+      try {
+        const apiUrl = `https://api.alfixd.my.id/api/ytdl?url=${encodeURIComponent(url)}&format=mp3`;
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+        loading.style.display = "none";
+
+        if (data.status && data.result) {
+          result.innerHTML = `
+            <p>✅ Audio berhasil didapatkan:</p>
+            <audio controls src="${data.result.download_url}" style="width:100%; margin-bottom:10px;"></audio>
+            <a href="${data.result.download_url}" download="${data.result.title}.mp3">
+              <button>Download MP3</button>
+            </a>
+          `;
+        } else {
+          result.innerHTML = `<p style="color: #ff4c4c;">Terjadi kesalahan saat mengambil audio.</p>`;
+        }
+      } catch {
+        loading.style.display = "none";
+        result.innerHTML = `<p style="color: #ff4c4c;">Terjadi kesalahan saat mengunduh audio.</p>`;
+      }
+    }
+  </script>
 </body>
 </html>
